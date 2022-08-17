@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+
+const cv = window.cv
 
 function App() {
+  const onChangeFile = e => {
+    if (e.target.files && e.target.files[0]) {
+      const img = new Image()
+      img.onload = () => {
+        const mat = cv.imread(img)
+        cv.imshow('output', mat)
+        mat.delete()
+      }
+      img.src = URL.createObjectURL(e.target.files[0])
+    }
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <input type="file" onChange={onChangeFile} />
+      </div>
+      <canvas id="output" />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
